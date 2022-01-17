@@ -71,7 +71,7 @@ public class Huffman {
     // Builds Huffman Tree and huffmanCode and decode given input text
     public void buildHuffmanTree(String text) {
 
-        out.println("\nOriginal string was :\n" + text);
+        out.printf("\nOriginal string was %d:\n%s%n",text.length()*8, text);
         // root stores pointer to root of Huffman Tree
         Node root = makeHaffmanTree(text);
 
@@ -83,10 +83,13 @@ public class Huffman {
         // print encoded string
         StringBuilder sb = new StringBuilder();
         for (byte aByte : text.getBytes()) sb.append(huffmanCode.get((char) aByte));
-        out.println("\nEncoded string is :\n" + sb);
+        out.printf("\nEncoded string is %f:\n%s%n",(float)sb.length(),
+            sb.toString().replaceAll("(\\d{64})", "$1\n")
+                    .replaceAll("(\\d{8})","$1 ")
+        );
 
         // traverse the Huffman Tree again and this time decode the encoded string
-        out.println("\nDecoded string is:");
+        out.printf("\nDecoded string is:%f%n", text.length()*8/(float)sb.length());
         for (int index = -1; index < sb.length() - 2; ) index = decode(root, index, sb);
     }
 }
