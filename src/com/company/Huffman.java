@@ -1,5 +1,7 @@
 package com.company;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +44,7 @@ public class Huffman {
     }
 
     // a priority queue to store live nodes of Huffman tree
-    Node makeHaffmanTree(String text) {
+    Node makeHaffmanTree(@NotNull String text) {
         // count frequency of appearance of each character and store it in a map
         Map<Character, Integer> freq = new HashMap<>();
         for (byte aByte : text.getBytes(StandardCharsets.UTF_8)) {
