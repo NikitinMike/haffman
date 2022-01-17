@@ -1,9 +1,11 @@
 package com.company;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 import static java.util.Comparator.comparingInt;
@@ -89,19 +91,20 @@ public class Huffman {
         //---------------------------------------------------------------------
 
         // print encoded string
-        StringBuilder sb = new StringBuilder();
-        for (byte aByte : text.getBytes()) sb.append(huffmanCode.get((char) aByte));
+        StringBuilder encoded = new StringBuilder();
+        for (byte aByte : text.getBytes()) encoded.append(huffmanCode.get((char) aByte));
         //--------------------------------------------------------------------
-        if (trace) {out.printf("\nEncoded string is %d:\n",sb.length());
-            String[] sa = (sb + "0000000") // .replaceAll("(\\d{64})", "$1\n")
+        if (trace) {out.printf("\nEncoded string is %d:\n",encoded.length());
+            String[] sa = (encoded + "0000000") // .replaceAll("(\\d{64})", "$1\n")
                     .replaceAll("(\\d{8})", "$1 ").split(" ");
-            for (String s : sa) out.printf("%x",Integer.parseInt(s,2));
+            for (String s : sa) out.printf("%x", Integer.parseInt(s, 2));
+//            out.println(Arrays.stream(sa).map(s->Integer.parseInt(s, 2)).collect(Collectors.toList()));
         }
         //--------------------------------------------------------------------
 
         // traverse the Huffman Tree again and this time decode the encoded string
-        out.printf("\nDecoded k=%f string %d bit is:%n", (float)sb.length()/8/text.length(),sb.length());
-        for (int index = -1; index < sb.length() - 2; ) index = decode(root, index, sb);
+        out.printf("\nDecoded k=%f string %d bit is:%n", (float)encoded.length()/8/text.length(),encoded.length());
+        for (int index = -1; index < encoded.length() - 2; ) index = decode(root, index, encoded);
         out.println(dsb.toString().replaceAll("(.{80})","$1\n"));
     }
 }
