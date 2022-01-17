@@ -92,9 +92,11 @@ public class Huffman {
         StringBuilder sb = new StringBuilder();
         for (byte aByte : text.getBytes()) sb.append(huffmanCode.get((char) aByte));
         //--------------------------------------------------------------------
-        if (trace) out.printf("\nEncoded string is %f:\n%s%n",(float)sb.length(),
-            sb.toString().replaceAll("(\\d{64})", "$1\n") // .replaceAll("(\\d{8})","$1 ")
-        );
+        if (trace) {out.printf("\nEncoded string is %d:\n",sb.length());
+            String[] sa = (sb + "0000000") // .replaceAll("(\\d{64})", "$1\n")
+                    .replaceAll("(\\d{8})", "$1 ").split(" ");
+            for (String s : sa) out.printf("%x",Integer.parseInt(s,2));
+        }
         //--------------------------------------------------------------------
 
         // traverse the Huffman Tree again and this time decode the encoded string
