@@ -73,7 +73,7 @@ public class Huffman {
     // Builds Huffman Tree and huffmanCode and decode given input text
     public void buildHuffmanTree(String text,boolean trace) {
 
-        out.printf("\nOriginal string was %d bit %d:\n%s%n",text.length(),text.length()*8,
+        out.printf("\nOriginal string was %d bytes %d bit:\n%s%n",text.length(),text.length()*8,
                 text.replaceAll("(.{80})","$1\n"));
 
         // root stores pointer to root of Huffman Tree
@@ -98,7 +98,7 @@ public class Huffman {
         //--------------------------------------------------------------------
 
         // traverse the Huffman Tree again and this time decode the encoded string
-        out.printf("\nDecoded k=%f string is:%n", (float)sb.length()/8/text.length());
+        out.printf("\nDecoded k=%f string %d bit is:%n", (float)sb.length()/8/text.length(),sb.length());
         for (int index = -1; index < sb.length() - 2; ) index = decode(root, index, sb);
         out.println(dsb.toString().replaceAll("(.{80})","$1\n"));
     }
