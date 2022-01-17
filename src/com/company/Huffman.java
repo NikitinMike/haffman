@@ -23,12 +23,14 @@ public class Huffman {
         return huffmanCode;
     }
 
+    StringBuilder dsb=new StringBuilder();
     // traverse the Huffman Tree and decode the encoded string
     int decode(Node root, int index, StringBuilder sb) {
         if (root == null) return index;
         // found a leaf node
         if (root.getLeft() == null && root.getRight() == null) {
-            out.print(root.getCh());
+//            out.print(root.getCh());
+            dsb.append(root.getCh());
             return index;
         }
         index++;
@@ -69,27 +71,35 @@ public class Huffman {
     }
 
     // Builds Huffman Tree and huffmanCode and decode given input text
-    public void buildHuffmanTree(String text) {
+    public void buildHuffmanTree(String text,boolean trace) {
 
-        out.printf("\nOriginal string was %d:\n%s%n",text.length()*8, text);
+        out.printf("\nOriginal string was %d bit %d:\n%s%n",text.length(),text.length()*8,
+                text.replaceAll("(.{80})","$1\n"));
+
         // root stores pointer to root of Huffman Tree
         Node root = makeHaffmanTree(text);
 
         // traverse the Huffman tree and store the Huffman codes in a map
         Map<Character, String> huffmanCode = encode(root, "", new HashMap<>());
-        out.println("\nHuffman Codes are:"); // print the Huffman codes
-        huffmanCode.forEach((key, value) -> out.println(key + " ".repeat(value.length()) + value));
+
+        //---------------------------------------------------------------------
+        if(trace){ out.println("\nHuffman Codes are:"); // print the Huffman codes
+            huffmanCode.forEach((key, value) -> out.println(key + " ".repeat(value.length()) + value));
+        }
+        //---------------------------------------------------------------------
 
         // print encoded string
         StringBuilder sb = new StringBuilder();
         for (byte aByte : text.getBytes()) sb.append(huffmanCode.get((char) aByte));
-        out.printf("\nEncoded string is %f:\n%s%n",(float)sb.length(),
-            sb.toString().replaceAll("(\\d{64})", "$1\n")
-                    .replaceAll("(\\d{8})","$1 ")
+        //--------------------------------------------------------------------
+        if (trace) out.printf("\nEncoded string is %f:\n%s%n",(float)sb.length(),
+            sb.toString().replaceAll("(\\d{64})", "$1\n") // .replaceAll("(\\d{8})","$1 ")
         );
+        //--------------------------------------------------------------------
 
         // traverse the Huffman Tree again and this time decode the encoded string
-        out.printf("\nDecoded string is:%f%n", text.length()*8/(float)sb.length());
+        out.printf("\nDecoded k=%f string is:%n", (float)sb.length()/8/text.length());
         for (int index = -1; index < sb.length() - 2; ) index = decode(root, index, sb);
+        out.println(dsb.toString().replaceAll("(.{80})","$1\n"));
     }
 }
