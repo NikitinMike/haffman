@@ -44,7 +44,7 @@ public class Huffman {
     }
 
     // a priority queue to store live nodes of Huffman tree
-    Node makeHaffmanTree(@NotNull String text) {
+    Node makeHuffmanTree(@NotNull String text) {
         // count frequency of appearance of each character and store it in a map
         Map<Character, Integer> freq = new HashMap<>();
         for (byte aByte : text.getBytes(StandardCharsets.UTF_8)) {
@@ -52,7 +52,7 @@ public class Huffman {
             if (!freq.containsKey(c)) freq.put(c, 0);
             freq.put(c, freq.get(c) + 1);
         }
-        // Notice that highest priority item has lowest frequency
+        // Notice that highest priority item has the lowest frequency
         // Create a leaf node for each character and add it to the priority queue.
         return optimizePriorityQueue(freq);
     }
@@ -62,12 +62,13 @@ public class Huffman {
         freq.forEach((key, value) -> pq.add(new Node(key, value)));
         // do till there is more than one node in the queue
         while (pq.size() > 1) {
-            // Remove the two nodes of highest priority (lowest frequency) from the queue
+            // Remove the two nodes of the highest priority (the lowest frequency) from the queue
             Node left = pq.poll();
             Node right = pq.poll();
             // Create a new internal node with these two nodes as children
             // and with frequency equal to the sum of the two nodes frequencies.
             // Add the new node to the priority queue.
+            assert right != null;
             pq.add(new Node(left, right, ZC, left.getFreq() + right.getFreq()));
         }
         return pq.peek();
@@ -79,8 +80,8 @@ public class Huffman {
         out.printf("\nOriginal string was %d bytes %d bit:\n%s%n", text.length(), text.length() * 8,
                 text.replaceAll("(.{80})", "$1\n"));
 
-        // root stores pointer to root of Huffman Tree
-        Node root = makeHaffmanTree(text);
+        // root stores' pointer to root of Huffman Tree
+        Node root = makeHuffmanTree(text);
 
         // traverse the Huffman tree and store the Huffman codes in a map
         Map<Character, String> huffmanCode = encode(root, "", new HashMap<>());
